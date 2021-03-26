@@ -8,13 +8,13 @@ import Post from '../../Containers/Post'
 // Functions
 import { getAllPosts } from '../../../Domain/post'
 
-interface PostsInterface {
+interface State {
   key: string
   value: { title: string; text: string }
 }
 
 const Home = (): JSX.Element => {
-  const [posts, setPosts] = useState<PostsInterface[]>([])
+  const [posts, setPosts] = useState<State[]>([])
 
   useEffect(() => {
     savePostsToState()

@@ -9,22 +9,22 @@ import TextArea from '../../Components/TextArea'
 // Function
 import { editPost, removePost } from '../../../Domain/post'
 
-interface PropsInterface {
+interface Props {
   id: string
   title: string
   text: string
   reRender: () => void
 }
 
-interface StateInterface {
+interface State {
   title: string
   text: string
 }
 
-const Post = (props: PropsInterface): JSX.Element => {
+const Post = (props: Props): JSX.Element => {
   const [isEditable, setIsEditable] = useState<boolean>(false)
 
-  const [state, setState] = useState<StateInterface>({ title: '', text: '' })
+  const [state, setState] = useState<State>({ title: '', text: '' })
 
   const updateState = (e: BaseSyntheticEvent): void => {
     setState({

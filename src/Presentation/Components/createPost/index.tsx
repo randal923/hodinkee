@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface Posts {
+interface Props {
   title: string
   content: string
   image?: {
@@ -10,7 +10,7 @@ interface Posts {
   }
 }
 
-const CreatePost = ({ title, content, image }: Posts): JSX.Element => (
+const CreatePost = ({ title, content, image }: Props): JSX.Element => (
   <Container>
     <h1>{title}</h1>
     <p>{content}</p>

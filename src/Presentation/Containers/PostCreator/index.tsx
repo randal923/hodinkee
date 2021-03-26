@@ -11,16 +11,16 @@ import TextArea from '../../Components/TextArea'
 import Input from '../../Components/Input'
 
 interface State {
-  title?: string
-  text?: string
+  title: string
+  text: string
 }
 
-interface PropsInterface {
+interface Props {
   reRender: () => void
 }
 
-const PostCreator = (props: PropsInterface): JSX.Element => {
-  const [state, setState] = useState<State>()
+const PostCreator = (props: Props): JSX.Element => {
+  const [state, setState] = useState<State>({ title: '', text: '' })
 
   const updateState = (e: BaseSyntheticEvent): void => {
     setState({

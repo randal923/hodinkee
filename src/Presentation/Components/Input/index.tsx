@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
-interface InputInterface {
+interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   name?: string
   defaultValue?: string
 }
 
-const Input = (props: InputInterface): JSX.Element => (
+const Input = (props: Props): JSX.Element => (
   <Container
     onChange={props.onChange}
     placeholder={props.placeholder}

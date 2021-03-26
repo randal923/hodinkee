@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface ButtonInterface {
+interface Props {
   text: string
   onClick: () => void
 }
 
-const Button = ({ text, onClick }: ButtonInterface): JSX.Element => (
+const Button = ({ text, onClick }: Props): JSX.Element => (
   <Container onClick={onClick}>{text}</Container>
 )
 
