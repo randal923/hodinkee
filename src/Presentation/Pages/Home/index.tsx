@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 
 // Containers
@@ -6,45 +6,29 @@ import PostCreator from '../../Containers/PostCreator'
 import Post from '../../Containers/Post'
 
 // Functions
-import { getAllPosts } from '../../../Domain/post'
+import { ACTIONS, reducer } from '../../../Domain/reducer/posts'
+import { getPostsFromUrl } from '../../../Domain/post'
 
-interface State {
-  key: string
-  value: { title: string; text: string }
-}
+// Interfaces
+import { IPost } from '../../../Data/types'
 
 const Home = (): JSX.Element => {
-  const [posts, setPosts] = useState<State[]>([])
+  const [posts, dispatch] = useReducer(reducer, [])
 
   useEffect(() => {
-    savePostsToState()
+    dispatch({ type: ACTIONS.GET_ALL_POSTS })
+    getPostsFromUrl()
   }, [])
-
-  const savePostsToState = (): void => {
-    const posts = getAllPosts()
-
-    const arrayOfPosts = Object.entries(posts).map((post) => ({
-      key: post[0],
-      value: JSON.parse(post[1])
-    }))
-
-    setPosts(arrayOfPosts)
-  }
-
-  const reRender = (): void => {
-    savePostsToState()
-  }
 
   return (
     <Container>
-      <PostCreator reRender={reRender} />
-      {posts.map((post) => (
+      <PostCreator dispatch={dispatch} />
+      {posts?.map((post: IPost) => (
         <Post
-          key={post.key}
-          title={post.value.title}
-          text={post.value.text}
-          id={post.key}
-          reRender={reRender}
+          key={post.id}
+          id={post.id}
+          value={post.value}
+          dispatch={dispatch}
         />
       ))}
     </Container>

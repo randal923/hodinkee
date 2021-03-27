@@ -6,24 +6,17 @@ import Button from '../../Components/Button'
 import Input from '../../Components/Input'
 import TextArea from '../../Components/TextArea'
 
-// Function
-import { editPost, removePost } from '../../../Domain/post'
-
-interface Props {
-  id: string
-  title: string
-  text: string
-  reRender: () => void
-}
+// Interfaces
+import { IPost } from '../../../Data/types/post'
+import { ACTIONS } from 'Domain/reducer/posts'
 
 interface State {
   title: string
   text: string
 }
 
-const Post = (props: Props): JSX.Element => {
+const Post = (props: IPost): JSX.Element => {
   const [isEditable, setIsEditable] = useState<boolean>(false)
-
   const [state, setState] = useState<State>({ title: '', text: '' })
 
   const updateState = (e: BaseSyntheticEvent): void => {
@@ -35,35 +28,43 @@ const Post = (props: Props): JSX.Element => {
 
   const setEditable = (): void => {
     setIsEditable(true)
+    setState({ title: props.value.title, text: props.value.text })
   }
 
   const save = (): void => {
     setIsEditable(false)
-    editPost(props.id, state)
-    props.reRender()
+    props.dispatch({
+      type: ACTIONS.EDIT_POST,
+      payload: { id: props.id, value: state }
+    })
   }
 
   const remove = (): void => {
-    const response = removePost(props.id)
-    props.reRender()
-    alert(response)
+    props.dispatch({
+      type: ACTIONS.REMOVE_POST,
+      payload: { id: props.id }
+    })
   }
 
   return (
     <Container>
       {isEditable ? (
-        <Input defaultValue={props.title} name="title" onChange={updateState} />
+        <Input
+          defaultValue={props.value.title}
+          name="title"
+          onChange={updateState}
+        />
       ) : (
-        <h1>{props.title}</h1>
+        <h1>{props.value.title}</h1>
       )}
       {isEditable ? (
         <TextArea
-          defaultValue={props.text}
+          defaultValue={props.value.text}
           name="text"
           onChange={updateState}
         />
       ) : (
-        <p>{props.text}</p>
+        <p>{props.value.text}</p>
       )}
       <Menu>
         <Button text="Edit" onClick={setEditable} />

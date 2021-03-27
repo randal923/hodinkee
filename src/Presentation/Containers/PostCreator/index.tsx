@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, BaseSyntheticEvent } from 'react'
 import { v4 as uuid } from 'uuid'
 import styled from 'styled-components'
-
-// Functions
-import { storePost } from '../../../Domain/post'
 
 // Components
 import Button from '../../Components/Button'
 import TextArea from '../../Components/TextArea'
 import Input from '../../Components/Input'
+import { ACTIONS } from 'Domain/reducer/posts'
 
 interface State {
   title: string
@@ -16,7 +15,7 @@ interface State {
 }
 
 interface Props {
-  reRender: () => void
+  dispatch: any
 }
 
 const PostCreator = (props: Props): JSX.Element => {
@@ -31,9 +30,10 @@ const PostCreator = (props: Props): JSX.Element => {
 
   const store = (): void => {
     if (!state?.text || !state?.title) return alert("Fields can't be empty")
-    const result = storePost(uuid(), { title: state.title, text: state.text })
-    props.reRender()
-    alert(result)
+    props.dispatch({
+      type: ACTIONS.CREATE_POST,
+      payload: { id: uuid(), value: state }
+    })
   }
 
   return (

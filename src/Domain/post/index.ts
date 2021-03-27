@@ -1,42 +1,52 @@
 import { LocalStorage } from '../../Data/localstorage'
+import { Http } from '../../Data/http'
+import { UrlBuilder } from '../../Data/urlBuilder'
+
+// Interfaces
+import { IPost } from '../../Data/types/'
 
 interface Value {
   title: string
   text: string
 }
 
-export const storePost = (key: string, value: Value): string => {
-  LocalStorage.setItem(key, JSON.stringify(value))
+interface Posts {
+  id: string
+  value: IPost
+}
 
-  const getItem = LocalStorage.getItem(key)
+export const createPost = (id: string, value: Value): Posts[] => {
+  LocalStorage.setItem(id, JSON.stringify(value))
 
-  if (getItem) {
-    return 'Post stored successfully.'
-  }
-
-  return 'Failed to store post.'
+  return savePostsToState()
 }
 
 export const getAllPosts = (): Record<string, string> => {
   return localStorage
 }
 
-export const editPost = (key: string, value: Value): string => {
-  const post = LocalStorage.getItem(key)
-
-  if (!post) return 'Post not found.'
-
-  LocalStorage.setItem(key, JSON.stringify(value))
-
-  return 'Post edited successfully.'
+export const editPost = (id: string, value: Value): Posts[] => {
+  LocalStorage.setItem(id, JSON.stringify(value))
+  return savePostsToState()
 }
 
-export const removePost = (key: string): string => {
-  const post = LocalStorage.getItem(key)
+export const removePost = (id: string): Posts[] => {
+  LocalStorage.removeItem(id)
 
-  if (!post) return 'Post not found.'
+  return savePostsToState()
+}
 
-  LocalStorage.removeItem(key)
+export const savePostsToState = (): Posts[] => {
+  const posts = getAllPosts()
 
-  return 'Post remoed successfully.'
+  const arrayOfPosts = Object.entries(posts).map((post) => ({
+    id: post[0],
+    value: JSON.parse(post[1])
+  }))
+
+  return arrayOfPosts
+}
+
+export const getPostsFromUrl = async (): Promise<void> => {
+  await Http.get(UrlBuilder.getPosts())
 }

@@ -2,9 +2,9 @@ import React, { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
-  name?: string
+  name: string
   defaultValue?: string
 }
 

@@ -2,9 +2,9 @@ import React, { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
 interface TextAreaInterface {
-  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
   placeholder?: string
-  name?: string
+  name: string
   defaultValue?: string
 }
 
