@@ -1,4 +1,5 @@
 import React, { BaseSyntheticEvent, useState, memo } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 // Components
@@ -6,16 +7,25 @@ import Button from '../../Components/Button'
 import Input from '../../Components/Input'
 import TextArea from '../../Components/TextArea'
 
-// Interfaces
-import { IPost } from '../../../Data/types/post'
-import { ACTIONS } from 'Domain/reducer/posts'
+// Functions
+import { editPost, removePost } from '../../../Domain/redux/posts'
 
 interface State {
   title: string
   text: string
 }
 
-const Post = (props: IPost): JSX.Element => {
+export interface Props {
+  isRemote: boolean
+  id: string
+  value: {
+    title: string
+    text: string
+  }
+}
+
+const Post = (props: Props): JSX.Element => {
+  const dispatch = useDispatch()
   const [isEditable, setIsEditable] = useState<boolean>(false)
   const [state, setState] = useState<State>({ title: '', text: '' })
 
@@ -33,17 +43,11 @@ const Post = (props: IPost): JSX.Element => {
 
   const save = (): void => {
     setIsEditable(false)
-    props.dispatch({
-      type: ACTIONS.EDIT_POST,
-      payload: { id: props.id, value: state }
-    })
+    dispatch(editPost(props.id, state))
   }
 
   const remove = (): void => {
-    props.dispatch({
-      type: ACTIONS.REMOVE_POST,
-      payload: { id: props.id }
-    })
+    dispatch(removePost(props.id))
   }
 
   return (
@@ -66,11 +70,13 @@ const Post = (props: IPost): JSX.Element => {
       ) : (
         <p>{props.value.text}</p>
       )}
-      <Menu>
-        <Button text="Edit" onClick={setEditable} />
-        <Button text="Save" onClick={save} />
-        <Button text="Remove" onClick={remove} />
-      </Menu>
+      {!props.isRemote && (
+        <Menu>
+          <Button text="Edit" onClick={setEditable} />
+          <Button text="Save" onClick={save} />
+          <Button text="Remove" onClick={remove} />
+        </Menu>
+      )}
     </Container>
   )
 }
