@@ -106,14 +106,17 @@ export const postsReducer = (state: any = {}, action: any): any => {
       }
     case ACTIONS.CREATE_POST:
       return {
+        ...state,
         localPosts: action.payload
       }
     case ACTIONS.EDIT_POST:
       return {
+        ...state,
         localPosts: action.payload
       }
     case ACTIONS.REMOVE_POST:
       return {
+        ...state,
         localPosts: action.payload
       }
     default:

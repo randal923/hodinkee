@@ -49,12 +49,14 @@ const Home = (): JSX.Element => {
       </Nav>
       {showLocalPosts
         ? localPosts?.map((post: IPost) => (
-            <Post
-              isRemote={false}
-              key={post.id}
-              id={post.id}
-              value={post.value}
-            />
+            <>
+              <Post
+                isRemote={false}
+                key={post.id}
+                id={post.id}
+                value={post.value}
+              />
+            </>
           ))
         : remotePosts?.map((post: IPost) => (
             <Post
