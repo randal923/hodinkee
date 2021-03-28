@@ -22,7 +22,6 @@ export const ACTIONS = {
 
 export const getRemotePosts = () => async (dispatch: any) => {
   const posts: any = await Http.get(UrlBuilder.getPosts())
-  console.log(posts)
   if (posts.status !== 'ok') return
   const payload = posts.articles.map((post: any) => {
     return {
